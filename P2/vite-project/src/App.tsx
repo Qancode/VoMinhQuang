@@ -12,9 +12,12 @@ const App = () => {
 
   const [to, setTo] = useState(0);
   const [infoTo, setInfoTo] = useState<string>("");
+
   const [priceInformation, setPriceInformation] = useState<PriceInformation[]>(
     []
   );
+
+  const [error, setError] = useState<string>(""); //check form
 
   const [amount, setAmount] = useState(0);
 
@@ -64,12 +67,24 @@ const App = () => {
                 <p className="font-sans text-xl">Enter Amount</p>
                 <input
                   onChange={(e) => {
-                    setAmount(Number(e.target.value));
+                    const value = Number(e.target.value);
+                    if (value < 0) {
+                      setError("Please enter a positive integer!!!"); //wrong
+                      setAmount(0);
+                    } else {
+                      setError(""); // correct
+                      setAmount(value);
+                    }
                   }}
                   type="number"
                   className="px-3 border-1 w-full h-12 rounded-sm mt-2"
                   placeholder="Enter value here"
                 />
+                {error && (
+                  <p className="text-red-700 mt-2 font-sans text-center">
+                    {error}
+                  </p>
+                )}
               </div>
 
               <div className="mt-6">
